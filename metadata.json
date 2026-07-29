@@ -1,0 +1,6 @@
+{
+  "name": "Maple ManagementRx",
+  "description": "Phone-optimized management platform, slash command simulator, and Python codebase for Maple ManagementRx v2.0.0 Discord Bot.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

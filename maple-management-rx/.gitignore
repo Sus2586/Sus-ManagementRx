@@ -1,0 +1,28 @@
+# Python build / runtime artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual Environment
+venv/
+env/
+.venv/
+
+# Environment Secrets - NEVER COMMIT TO GITHUB
+.env
+*.env
+*.pem
+
+# Database & Local Transcripts
+*.db
+*.sqlite
+*.sqlite3
+database/maple_bot.db
+transcripts/
+
+# OS / Editor junk
+.DS_Store
+.vscode/
+.idea/
