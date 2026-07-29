@@ -2,32 +2,41 @@ import sys
 import os
 
 os.environ["PYTHONUNBUFFERED"] = "1"
-print(">>> Bootstrapping Maple ManagementRx Bot...", flush=True)
+print("==================================================", flush=True)
+print(">>> Maple ManagementRx Bot Startup Initializer <<<", flush=True)
+print("==================================================", flush=True)
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
+print(f">>> Current directory: {current_dir}", flush=True)
 
-search_paths = [
-    current_dir,
-    os.path.join(current_dir, "maple-management-rx")
-]
-
-bot_dir = None
-for path in search_paths:
-    if os.path.exists(os.path.join(path, "bot.py")):
-        bot_dir = path
-        break
-
-if bot_dir:
-    print(f">>> Found bot.py in: {bot_dir}", flush=True)
-    if bot_dir not in sys.path:
-        sys.path.insert(0, bot_dir)
-    os.chdir(bot_dir)
+target_dir = None
+if os.path.exists(os.path.join(current_dir, "bot.py")):
+    target_dir = current_dir
+elif os.path.exists(os.path.join(current_dir, "maple-management-rx", "bot.py")):
+    target_dir = os.path.join(current_dir, "maple-management-rx")
 else:
-    print(f">>> CRITICAL: bot.py not found in {search_paths}", flush=True)
-    print(f">>> Directory content of {current_dir}: {os.listdir(current_dir)}", flush=True)
+    for root, dirs, files in os.walk(current_dir):
+        if "bot.py" in files:
+            target_dir = root
+            break
+
+if target_dir:
+    print(f">>> Located bot.py in: {target_dir}", flush=True)
+    if target_dir not in sys.path:
+        sys.path.insert(0, target_dir)
+    os.chdir(target_dir)
+else:
+    print(f">>> CRITICAL: Could not find bot.py in {current_dir}", flush=True)
+    sys.exit(1)
 
 if __name__ == "__main__":
-    print(">>> Launching bot script...", flush=True)
-    import bot
-    bot.main()
-
+    print(">>> Importing bot module...", flush=True)
+    try:
+        import bot
+        print(">>> Bot module imported successfully. Starting bot.main()...", flush=True)
+        bot.main()
+    except Exception as e:
+        print(f">>> ERROR during bot initialization: {e}", flush=True)
+        import traceback
+        traceback.print_exc(file=sys.stdout)
+        sys.exit(1)
